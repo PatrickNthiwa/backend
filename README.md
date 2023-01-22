@@ -26,3 +26,7 @@ The application will be divided into two.
 #### step 2: Installing passport
 `
 composer require laravel/passport`
+
+#### Step 3: Artisan migrate
+`php artisan migrate`
+
