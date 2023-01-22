@@ -30,3 +30,22 @@ composer require laravel/passport`
 #### Step 3: Artisan migrate
 `php artisan migrate`
 
+#### Step 4: Setting up/Installing passport inoder to generate the secured keys for authentications
+
+`php artisan passport:install`
+
+#### Step 5: Adding HasAPITokens Trait to the users model
+The Traits suplies our model with methods to inspect the authenticated users scopes and tokens
+
+
+`use Laravel\Passport\HasApiTokens;
+class User extends Authenticatable
+{
+//Add this...
+use HasApiTokens, HasFactory, Notifiable;
+…
+}`
+
+
+
+
