@@ -99,3 +99,56 @@ public function boot()
     'password_timeout' => 1080
    ];`
 
+#### Step 8 : Creating  CORSMiddleware and registering it.
+
+`php artisan make:middleware CORSMiddleware`
+
+This will help us to handle and set all required headers for the react application. 
+It will allow cross origin request coming from all several domains.
+
+I will make a middleware for this, 
+which will serve as a bridge between the request and the response,filtering all request and reponces via it.
+
+`class CORSMiddleware
+{
+public function handle(Request $request, Closure $next)
+{`
+   ` //Intercepts OPTIONS requests`
+
+    if($request->isMethod('OPTIONS')){
+    $response = \response('', 200);
+    }else{
+
+    //Pass the request to the next middleware
+
+    $response = $next($request);
+    }
+    $response->header('Access-Control-Allow-Origin',"*");
+    $response->header('Access-Control-Allow-Methods','PUT, GET, POST, DELETE, OPTIONS, PATCH');
+    $response->header('Access-Control-Allow-Headers',$request->header('Access-Control-Request-Headers'));
+    $response->header('Access-Control-Allow-Credentials','true');
+    $response->header('Accept','application/json');
+    $response->header('Access-Control-Expose-Headers','location');
+`return $response;
+}`
+
+#### Step 9 : Register the middleware in the kernel
+
+`protected $routeMiddleware = [
+...
+'CORS' => \App\Http\Middleware\CORSMiddleware::class,
+];`
+
+#### Step 10: Create API routes
+
+This will create endpoints where we can access our application. I will also attach the CORSMiddleware  so that all requests will pass through the middleware
+
+`
+Route::group(['prefix' => 'users', 'middleware' => 'CORS'], function ($router) {
+Route::post('/register', [UserController::class, 'register'])->name('register.user');
+Route::post('/login', [UserController::class, 'login'])->name('login.user');
+Route::get('/view-profile', [UserController::class, 'viewProfile'])->name('profile.user');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout.user');
+});`
+
+#### Step 11:  Creating  a respondWithToken helper function in Controller.php
