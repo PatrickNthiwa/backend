@@ -14,5 +14,15 @@ The application will be divided into two.
     The backend where i will design our API and the frontend where i  will design the User interface etc Hence, thr application will be structured as follows.
 
  1 .Backend — Containing our Laravel application for developing the API (we will work on this in this first part of the tutorial)
+ 
  2 .Frontend — Containing our React — Redux Application
 
+### Creating the application
+#### Step 1 : Installing laravel
+ ` laravel new react-backend
+   or
+  composer create-project laravel/laravel react-backend`
+ 
+#### step 2: Installing passport
+`
+composer require laravel/passport`
